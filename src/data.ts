@@ -4,7 +4,7 @@ export interface Flashcard {
     deck: "unseen" | "learning" | "reviewing" | "mastered";
 }
 
-export const data: Flashcard[] = [
+export const unseenDeckData: Flashcard[] = [
     {
         question: "What is the capital of France?",
         answer: "Paris",
@@ -54,5 +54,89 @@ export const data: Flashcard[] = [
         question: "What is the largest planet in our solar system?",
         answer: "Jupiter",
         deck: "unseen"
+    }
+];
+
+export const learningDeckData: Flashcard[] = [
+    {
+        question: "What is the formula for Newton's second law of motion?",
+        answer: "Force equals mass times acceleration (F=ma)",
+        deck: "learning"
+    },
+    {
+        question: "Who proposed the theory of relativity?",
+        answer: "Albert Einstein",
+        deck: "learning"
+    },
+    {
+        question: "What is the formula for calculating the perimeter of a rectangle?",
+        answer: "2 * (length + width)",
+        deck: "learning"
+    },
+    {
+        question: "What is the chemical symbol for iron?",
+        answer: "Fe",
+        deck: "learning"
+    },
+    {
+        question: "Who discovered penicillin?",
+        answer: "Alexander Fleming",
+        deck: "learning"
+    }
+];
+
+export const reviewingDeckData: Flashcard[] = [
+    {
+        question: "What are the three states of matter?",
+        answer: "Solid, liquid, gas",
+        deck: "reviewing"
+    },
+    {
+        question: "What is the largest organ in the human body?",
+        answer: "Skin",
+        deck: "reviewing"
+    },
+    {
+        question: "What is the speed of light in a vacuum?",
+        answer: "299,792 kilometers per second",
+        deck: "reviewing"
+    },
+    {
+        question: "Who is credited with the invention of the telephone?",
+        answer: "Alexander Graham Bell",
+        deck: "reviewing"
+    },
+    {
+        question: "What is the chemical formula for methane?",
+        answer: "CH4",
+        deck: "reviewing"
+    }
+];
+
+export const masteredDeckData: Flashcard[] = [
+    {
+        question: "What is the capital of Brazil?",
+        answer: "Brasília",
+        deck: "mastered"
+    },
+    {
+        question: "Who painted 'The Starry Night'?",
+        answer: "Vincent van Gogh",
+        deck: "mastered"
+    },
+    {
+        question: "What is the atomic number of oxygen?",
+        answer: "8",
+        deck: "mastered"
+    },
+    {
+        question: "Who wrote 'To Kill a Mockingbird'?",
+        answer: "Harper Lee",
+        deck: "mastered"
+    },
+    {
+        question: "What is the chemical formula for hydrogen peroxide?",
+        answer: "H2O2",
+        deck: "mastered"
     }
 ];

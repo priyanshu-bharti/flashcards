@@ -1,19 +1,67 @@
 import { useEffect, useState } from "react";
-import { Flashcard, data } from "./data";
+import {
+    Flashcard,
+    unseenDeckData,
+    learningDeckData,
+    reviewingDeckData,
+    masteredDeckData,
+} from "./data";
 import CurrentCard from "./CurrentCard";
 import CardList from "./CardList";
 
 function App() {
-    const [unseenDeck, setUnseenDeck] = useState<Flashcard[]>(data);
-    const [learningDeck, setLearningDeck] = useState<Flashcard[]>([]);
-    const [reviewingDeck, setReviewingDeck] = useState<Flashcard[]>([]);
-    const [masteredDeck, setMasteredDeck] = useState<Flashcard[]>([]);
+    const LEARNING_THRESHOLD = 3;
+    const REVIEW_THRESHOLD = 5;
+
+    const [unseenDeck, setUnseenDeck] = useState<Flashcard[]>(unseenDeckData);
+    const [learningDeck, setLearningDeck] =
+        useState<Flashcard[]>(learningDeckData);
+    const [reviewingDeck, setReviewingDeck] =
+        useState<Flashcard[]>(reviewingDeckData);
+    const [masteredDeck, setMasteredDeck] =
+        useState<Flashcard[]>(masteredDeckData);
     const [viewingDeck, setViewingDeck] = useState<Flashcard[]>([]);
     const [currentCard, setCurrentCard] = useState<number>(0);
 
     useEffect(() => {
-        setViewingDeck([...unseenDeck]);
-    }, [unseenDeck]);
+        const V = [];
+
+        // Pass 1: Add all the items from the unseen deck
+        V.push(...unseenDeck);
+        console.log(V);
+
+        // Pass 2: Add items from Learning deck to 3rd consecutive position
+        for (
+            let i = 0;
+            i < Math.min(learningDeck.length, Math.floor(V.length / 3));
+            i++
+        ) {
+            V.splice((i + 1) * LEARNING_THRESHOLD - 1, 0, learningDeck[i]);
+        }
+
+        // If length of Viewing deck is not a multiple of 3, add items from Learning and Reviewing deck alternately
+        if (V.length % LEARNING_THRESHOLD !== 0) {
+            const remaining = V.length % LEARNING_THRESHOLD;
+
+            for (let i = 0; i < remaining; i++) {
+                if (i % 2 === 0) V.push(learningDeck[Math.floor(i / 2)]);
+                else V.push(reviewingDeck[Math.floor(i / 2)]);
+            }
+        }
+
+        // Pass: 3 Add items from reviewing deck every 5th consecutive position
+        for (
+            let i = 0;
+            i < Math.min(reviewingDeck.length, Math.floor(V.length / 5));
+            i++
+        ) {
+            V.splice((i + 1) * REVIEW_THRESHOLD - 1, 0, reviewingDeck[i]);
+        }
+
+        // Final Pass: Append Item from mastered deck
+        V.push(...masteredDeck);
+        setViewingDeck(V.filter((i) => i !== undefined));
+    }, [learningDeck, reviewingDeck, unseenDeck, masteredDeck]);
 
     function handlePositive() {
         console.log("I know this");
@@ -34,6 +82,7 @@ function App() {
             <h1 className="text-5xl font-bold py-4 text-blue-300">
                 Flashcards app
             </h1>
+
             <CurrentCard viewingDeck={viewingDeck} currentCard={currentCard}>
                 <button
                     onClick={handlePositive}
@@ -48,12 +97,14 @@ function App() {
                     ❌ I don't know this
                 </button>
             </CurrentCard>
+
             <div className="">
                 <div className="py-2 grid grid-cols-4">
                     <CardList deck={unseenDeck} title="Unseen Deck" />
                     <CardList deck={learningDeck} title="Learning Deck" />
                     <CardList deck={reviewingDeck} title="Reviewing Deck" />
                     <CardList deck={masteredDeck} title="Mastered Deck" />
+                    <CardList deck={viewingDeck} title="Viewing Deck" />
                 </div>
             </div>
         </div>
