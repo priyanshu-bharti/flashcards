@@ -15,17 +15,39 @@ function App() {
         setViewingDeck([...unseenDeck]);
     }, [unseenDeck]);
 
+    function handlePositive() {
+        console.log("I know this");
+        // If unseen deck contains this card & viewingDeck[currentCard].deck === "unseen", pysh to mastered deck
+        // If learning deck contains this card & viewingDeck[currentCard].deck === "learning", push to reviewing deck
+        // If reviewing deck contains this card & viewingDeck[currentCard].deck === "reviewing", push to mastered deck
+        setCurrentCard((prevState) => (prevState + 1) % viewingDeck.length);
+    }
+
+    function handleNegative() {
+        console.log("I don't know this");
+        // If this card is in any deck other than learning, push to learning deck
+        setCurrentCard((prevState) => (prevState + 1) % viewingDeck.length);
+    }
+
     return (
         <div className="space-y-8 px-6 mx-auto">
             <h1 className="text-5xl font-bold py-4 text-blue-300">
                 Flashcards app
             </h1>
-            <CurrentCard
-                viewingDeck={viewingDeck}
-                setViewingDeck={setViewingDeck}
-                currentCard={currentCard}
-                setCurrentCard={setCurrentCard}
-            />
+            <CurrentCard viewingDeck={viewingDeck} currentCard={currentCard}>
+                <button
+                    onClick={handlePositive}
+                    className="bg-teal-900 px-4 py-2 rounded-md"
+                >
+                    👍 I know this
+                </button>
+                <button
+                    onClick={handleNegative}
+                    className=" bg-red-900 px-4 py-2 rounded-md"
+                >
+                    ❌ I don't know this
+                </button>
+            </CurrentCard>
             <div className="">
                 <div className="py-2 grid grid-cols-4">
                     <CardList deck={unseenDeck} title="Unseen Deck" />
