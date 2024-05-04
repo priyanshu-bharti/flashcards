@@ -5,6 +5,7 @@ const colors = {
     "Learning Deck": "text-red-300",
     "Reviewing Deck": "text-amber-300",
     "Mastered Deck": "text-teal-300",
+    "Viewing Deck": "",
 };
 
 const deckColor = {
@@ -19,7 +20,12 @@ function CardList({
     title,
 }: {
     deck: Flashcard[];
-    title: "Unseen Deck" | "Reviewing Deck" | "Learning Deck" | "Mastered Deck";
+    title:
+        | "Unseen Deck"
+        | "Reviewing Deck"
+        | "Learning Deck"
+        | "Mastered Deck"
+        | "Viewing Deck";
 }) {
     return (
         <div className="border border-gray-700 p-4 divide-y divide-gray-600">

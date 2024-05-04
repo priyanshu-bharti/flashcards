@@ -10,6 +10,14 @@ function CurrentCard({
     currentCard: number;
     viewingDeck: Flashcard[];
 }) {
+
+    const deckColor = {
+        unseen: "text-gray-300",
+        learning: "text-red-300",
+        reviewing: "text-amber-300",
+        mastered: "text-teal-300",
+    };
+    
     if (!viewingDeck[currentCard])
         return (
             <div className="font-bold text-3xl text-pink-300 text-center">
@@ -22,7 +30,7 @@ function CurrentCard({
             <h2 className="text-xl font-bold text-violet-300">
                 {viewingDeck[currentCard].question}
             </h2>
-            <p className="">{viewingDeck[currentCard].answer}</p>
+            <p className={deckColor[viewingDeck[currentCard].deck]}>{viewingDeck[currentCard].answer}</p>
             <div className="flex gap-4 justify-center">{children}</div>
         </div>
     );
