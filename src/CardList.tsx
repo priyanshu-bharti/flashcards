@@ -14,7 +14,9 @@ function CardList({ deck, title }: { deck: Flashcard[]; title: string }) {
                 {title}
             </h1>
             {deck.map((card) => (
-                <div className="text-sm py-2">{card.question} </div>
+                <div key={card.question} className="text-sm py-2">
+                    {card.question}{" "}
+                </div>
             ))}
         </div>
     );

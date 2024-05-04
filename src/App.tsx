@@ -9,14 +9,23 @@ function App() {
     const [reviewingDeck, setReviewingDeck] = useState<Flashcard[]>([]);
     const [masteredDeck, setMasteredDeck] = useState<Flashcard[]>([]);
     const [viewingDeck, setViewingDeck] = useState<Flashcard[]>([]);
-    const [currentCard, setCurrentCard] = useState<Flashcard | undefined>();
+    const [currentCard, setCurrentCard] = useState<number>(0);
+
+    useEffect(() => {
+        setViewingDeck([...unseenDeck]);
+    }, [unseenDeck]);
 
     return (
         <div className="space-y-8 px-6 mx-auto">
             <h1 className="text-5xl font-bold py-4 text-blue-300">
                 Flashcards app
             </h1>
-            <CurrentCard />
+            <CurrentCard
+                viewingDeck={viewingDeck}
+                setViewingDeck={setViewingDeck}
+                currentCard={currentCard}
+                setCurrentCard={setCurrentCard}
+            />
             <div className="">
                 <div className="py-2 grid grid-cols-4">
                     <CardList deck={unseenDeck} title="Unseen Deck" />
