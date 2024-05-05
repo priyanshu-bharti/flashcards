@@ -31,7 +31,6 @@ const SideBarCard = ({ length, title, onEdit, onDelete }: SideBarCardProps) => {
                 </div>
             </div>
             <p>{length} Cards</p>
-            <p>21 Learning, 5 Reviewing, 5 Mastered</p>
         </Link>
     );
 };

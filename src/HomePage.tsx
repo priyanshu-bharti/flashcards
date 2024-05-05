@@ -4,19 +4,22 @@ import { Flashcard } from "./data";
 import LabelledInput from "./components/LabelledInput";
 import { useState } from "react";
 
-export type FormValues = {
+export type DeckValuesForm = {
     title: string;
     cards: Flashcard[];
 };
 
 const HomePage = () => {
-    const form = useForm<FormValues>();
+    const form = useForm<DeckValuesForm>();
+    const [decks, setDecks] = useState<DeckValuesForm[]>([]);
 
-    const { register, control, handleSubmit } = form;
+    const { register, control, handleSubmit, formState } = form;
+    const { errors } = formState;
 
-    function handleCardSave(data: FormValues) {
+    function handleCardSave(data: DeckValuesForm) {
         // TODO: Handle saving to indexedDB
         console.log(data);
+        setDecks((prevState) => prevState.concat(data));
     }
 
     const { fields, append, remove } = useFieldArray({
@@ -26,8 +29,8 @@ const HomePage = () => {
 
     return (
         <div className="container grid grid-cols-2 gap-12 mx-auto p-4 ">
-            <SideBar />
-            <div className="grid gap-4">
+            <SideBar decks={decks} />
+            <div className="flex flex-col gap-4">
                 <FormHeader
                     onCancel={() => {}}
                     onSave={handleSubmit(handleCardSave)}
@@ -37,7 +40,9 @@ const HomePage = () => {
                         label="Deck Title"
                         placeholder="Enter the Deck title here..."
                         register={register}
+                        errors={errors}
                         regName="title"
+                        idx={-1}
                         regOptions={{
                             required: {
                                 value: true,
@@ -54,7 +59,9 @@ const HomePage = () => {
                         orderNumber={idx}
                     >
                         <LabelledInput
+                            idx={idx}
                             label="Question"
+                            errors={errors}
                             id={`cards.${idx}.question`}
                             placeholder="Place Question here"
                             register={register}
@@ -67,9 +74,11 @@ const HomePage = () => {
                             }}
                         />
                         <LabelledInput
+                            idx={idx}
                             label="Answer"
                             id={`cards.${idx}.answer`}
                             placeholder="Place the Correct Answer Here..."
+                            errors={errors}
                             register={register}
                             regName={`cards.${idx}.answer`}
                             regOptions={{
@@ -83,12 +92,12 @@ const HomePage = () => {
                 ))}
 
                 <button
-                    className="px-4 py-2 bg-teal-600 rounded-md border border-white"
+                    className="px-4 py-2 mb-8 bg-blue-600 rounded-md border border-white"
                     onClick={() =>
                         append({ question: "", answer: "", queue: "unseen" })
                     }
                 >
-                    Add More
+                    Add Card to Deck
                 </button>
             </div>
         </div>

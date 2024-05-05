@@ -1,10 +1,12 @@
 import { FieldErrors, RegisterOptions, UseFormRegister } from "react-hook-form";
-import { FormValues } from "../HomePage";
+import { DeckValuesForm } from "../HomePage";
 interface LabelledInputProps {
     label?: string;
     placeholder?: string;
+    idx: number;
     id: string;
-    register: UseFormRegister<FormValues>;
+    register: UseFormRegister<DeckValuesForm>;
+    errors: FieldErrors<DeckValuesForm>;
     regName:
         | "title"
         | "cards"
@@ -14,7 +16,7 @@ interface LabelledInputProps {
         | `cards.${number}.queue`;
     regOptions:
         | RegisterOptions<
-              FormValues,
+              DeckValuesForm,
               | "title"
               | "cards"
               | `cards.${number}`
@@ -29,13 +31,19 @@ const LabelledInput = ({
     label = "",
     placeholder,
     id,
+    idx,
     register,
     regName,
     regOptions,
+    errors,
 }: LabelledInputProps) => {
+    const [type, _, field] = id.split(".");
+    console.log(field);
+    console.log(idx);
+
     return (
         <>
-            <form className="flex gap-2 justify-center items-center">
+            <div className="flex gap-2 justify-center items-center">
                 {label && (
                     <label htmlFor={id} className="min-w-20 font-bold">
                         {label}
@@ -48,7 +56,12 @@ const LabelledInput = ({
                     {...register(regName, regOptions)}
                     required
                 />
-            </form>
+            </div>
+            <p className="text-red-700">
+                {idx === -1 && errors[type]?.message}
+                {/* {(idx > -1 && field==="question") && errors.cards[idx]?.question}
+                {(idx > -1 && field==="answer") && errors.cards[idx]?.answer} */}
+            </p>
         </>
     );
 };
