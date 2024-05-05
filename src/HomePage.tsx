@@ -1,84 +1,98 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { CardInput, FormHeader, SideBar } from "./components";
 import { Flashcard } from "./data";
 import LabelledInput from "./components/LabelledInput";
 import { useState } from "react";
 
 export type FormValues = {
-  title: string;
-  card: Flashcard[];
+    title: string;
+    cards: Flashcard[];
 };
 
 const HomePage = () => {
-  const form = useForm<FormValues>();
+    const form = useForm<FormValues>();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = form;
-  const handleSaveCard = (formValues: any) => {
-    console.log("Submitted Values :- ", formValues);
-  };
-  const [cardDeck, setCardDeck] = useState<Flashcard[]>([
-    { question:"1", answer: "1", queue: "unseen" },
-  ]);
-  const handleAddMoreCards = ()=>{
-    setCardDeck(prev=>[...prev,{ question: `${prev.length+1}`, answer: `${prev.length+1}`, queue: "unseen" }])
-  } 
-  const handleDeleteCard = (card:Flashcard)=>{
-    
-    setCardDeck(prev=>prev.filter((flashcard:Flashcard)=>flashcard.question !==card.question))
-  }
-  return (
-    <div className="container grid grid-cols-2 gap-12 mx-auto p-4 ">
-      <SideBar />
-      <div className="grid gap-4">
-        <FormHeader onCancel={() => {}} onSave={handleSubmit(handleSaveCard)}>
-          <LabelledInput
-            id="title"
-            label="title"
-            placeholder="Enter the Deck title here..."
-            register={register}
-            registrationParams="title"
-            registrationOptions={{required:"this field is required"}}
-            errors={errors}
-          />
-        </FormHeader>
-        {cardDeck.map((card: Flashcard, index: number) => (
-          <CardInput key={`${card.question}-${index}`} onDelete={() => handleDeleteCard(card)} orderNumber={index+1}>
-            <LabelledInput
-              label="Question"
-              id={`question-${index}`}
-              placeholder="Place Question here"
-              register={register}
-              registrationParams={`card.${index}.question`}
-              registrationOptions={{required:"this field is required"}}
-              errors={errors}
-              inputIdx={index}
-            />
-            <LabelledInput
-              label="Answer"
-              id={`answer-${index}`}
-              placeholder="Place the Correct Answer Here..."
-              register={register}
-              errors={errors}
-              registrationParams={`card.${index}.answer`}
-              registrationOptions={{required:"this field is required"}}
-              inputIdx={index}
-            />
-          </CardInput>
-        ))}
+    const { register, control, handleSubmit } = form;
 
-        <button
-          className="px-4 py-2 bg-teal-600 rounded-md border border-white"
-          onClick={handleAddMoreCards}
-        >
-          Add More
-        </button>
-      </div>
-    </div>
-  );
+    function handleCardSave(data: FormValues) {
+        // TODO: Handle saving to indexedDB
+        console.log(data);
+    }
+
+    const { fields, append, remove } = useFieldArray({
+        name: "cards",
+        control,
+    });
+
+    return (
+        <div className="container grid grid-cols-2 gap-12 mx-auto p-4 ">
+            <SideBar />
+            <div className="grid gap-4">
+                <FormHeader
+                    onCancel={() => {}}
+                    onSave={handleSubmit(handleCardSave)}
+                >
+                    <LabelledInput
+                        id="title"
+                        label="Deck Title"
+                        placeholder="Enter the Deck title here..."
+                        register={register}
+                        regName="title"
+                        regOptions={{
+                            required: {
+                                value: true,
+                                message: "Deck Title can't be empty",
+                            },
+                        }}
+                    />
+                </FormHeader>
+
+                {fields.map((field, idx) => (
+                    <CardInput
+                        key={field.id}
+                        onDelete={() => remove(idx)}
+                        orderNumber={idx}
+                    >
+                        <LabelledInput
+                            label="Question"
+                            id={`cards.${idx}.question`}
+                            placeholder="Place Question here"
+                            register={register}
+                            regName={`cards.${idx}.question`}
+                            regOptions={{
+                                required: {
+                                    value: true,
+                                    message: "Question can't be empty",
+                                },
+                            }}
+                        />
+                        <LabelledInput
+                            label="Answer"
+                            id={`cards.${idx}.answer`}
+                            placeholder="Place the Correct Answer Here..."
+                            register={register}
+                            regName={`cards.${idx}.answer`}
+                            regOptions={{
+                                required: {
+                                    value: true,
+                                    message: "Answer can't be empty",
+                                },
+                            }}
+                        />
+                    </CardInput>
+                ))}
+
+                <button
+                    className="px-4 py-2 bg-teal-600 rounded-md border border-white"
+                    onClick={() =>
+                        append({ question: "", answer: "", queue: "unseen" })
+                    }
+                >
+                    Add More
+                </button>
+            </div>
+        </div>
+    );
 };
 
 export default HomePage;

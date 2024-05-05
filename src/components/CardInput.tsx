@@ -8,7 +8,7 @@ const CardInput = ({ orderNumber, onDelete, children }: CardInputProps) => {
         <div className="flex flex-col gap-2 bg-blue-600 p-4 rounded-md">
             <div className="flex justify-between items-center">
                 <h1 className="text-xl font-bold capitalize">
-                    card {orderNumber}
+                    card {orderNumber + 1}
                 </h1>
                 <button
                     className="px-4 py-2 bg-red-500 rounded-md border border-white"
