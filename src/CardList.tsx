@@ -16,10 +16,10 @@ const deckColor = {
 };
 
 function CardList({
-    deck,
+    cards,
     title,
 }: {
-    deck: Flashcard[];
+    cards: Flashcard[];
     title:
         | "Unseen Deck"
         | "Reviewing Deck"
@@ -32,10 +32,10 @@ function CardList({
             <h1 className={"text-2xl font-bold pb-2 " + colors[title]}>
                 {title}
             </h1>
-            {deck.map((card) => (
+            {cards.map((card) => (
                 <div
                     key={card.question}
-                    className={"text-sm py-2 " + deckColor[card.deck]}
+                    className={"text-sm py-2 " + deckColor[card.queue]}
                 >
                     {card.question}{" "}
                 </div>

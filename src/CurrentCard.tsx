@@ -30,7 +30,7 @@ function CurrentCard({
             <h2 className="text-xl font-bold text-violet-300">
                 {viewingDeck[currentCard].question}
             </h2>
-            <p className={deckColor[viewingDeck[currentCard].deck]}>{viewingDeck[currentCard].answer}</p>
+            <p className={deckColor[viewingDeck[currentCard].queue]}>{viewingDeck[currentCard].answer}</p>
             <div className="flex gap-4 justify-center">{children}</div>
         </div>
     );

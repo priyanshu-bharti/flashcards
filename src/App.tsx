@@ -1,18 +1,18 @@
 import CurrentCard from "./CurrentCard";
 import CardList from "./CardList";
-import { useViewingDeck } from "./useViewingDeck";
+import { useViewingCards } from "./useViewingCards";
 
 function App() {
     const [
         currCardIdx,
-        viewingDeck,
-        unseenDeck,
-        learningDeck,
-        reviewingDeck,
-        masteredDeck,
+        viewingCards,
+        unseenCards,
+        learningCards,
+        reviewingCards,
+        masteredCards,
         handlePositive,
         handleNegative,
-    ] = useViewingDeck();
+    ] = useViewingCards();
 
     /*
      */
@@ -23,7 +23,7 @@ function App() {
                 Flashcards app
             </h1>
 
-            <CurrentCard viewingDeck={viewingDeck} currentCard={currCardIdx}>
+            <CurrentCard viewingDeck={viewingCards} currentCard={currCardIdx}>
                 <button
                     onClick={handlePositive}
                     className="bg-teal-900 px-4 py-2 rounded-md"
@@ -40,11 +40,11 @@ function App() {
 
             <div className="">
                 <div className="py-2 grid grid-cols-5">
-                    <CardList deck={viewingDeck} title="Viewing Deck" />
-                    <CardList deck={unseenDeck} title="Unseen Deck" />
-                    <CardList deck={learningDeck} title="Learning Deck" />
-                    <CardList deck={reviewingDeck} title="Reviewing Deck" />
-                    <CardList deck={masteredDeck} title="Mastered Deck" />
+                    <CardList cards={viewingCards} title="Viewing Deck" />
+                    <CardList cards={unseenCards} title="Unseen Deck" />
+                    <CardList cards={learningCards} title="Learning Deck" />
+                    <CardList cards={reviewingCards} title="Reviewing Deck" />
+                    <CardList cards={masteredCards} title="Mastered Deck" />
                 </div>
             </div>
         </div>
