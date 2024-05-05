@@ -1,5 +1,5 @@
 import React from "react";
-import { Flashcard } from "./data";
+import { Flashcard } from "../data";
 
 function CurrentCard({
     children,

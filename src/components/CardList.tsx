@@ -1,4 +1,4 @@
-import { Flashcard } from "./data";
+import { Flashcard } from "../data";
 
 const colors = {
     "Unseen Deck": "text-purple-300",
