@@ -2,7 +2,7 @@ import { SideBarCard } from ".";
 
 const SideBar = () => {
     return (
-        <div className=" flex flex-col gap-4 ">
+        <div className=" flex flex-col gap-4 py-8">
             <h1 className="text-4xl font-bold">All Decks</h1>
             <SideBarCard
                 length={21}

@@ -1,28 +1,23 @@
-import LabelledInput from "./LabelledInput";
-
 interface CardInputProps {
     onDelete: () => void;
     orderNumber: number;
+    children: React.ReactNode;
 }
-const CardInput = ({ orderNumber: cardNumber, onDelete }: CardInputProps) => {
+const CardInput = ({ orderNumber, onDelete, children }: CardInputProps) => {
     return (
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 bg-blue-600 p-4 rounded-md">
             <div className="flex justify-between items-center">
-                <h1 className="text-2xl font-bold capitalize">
-                    card {cardNumber}
+                <h1 className="text-xl font-bold capitalize">
+                    card {orderNumber}
                 </h1>
-                <button onClick={onDelete}>Delete</button>
+                <button
+                    className="px-4 py-2 bg-red-500 rounded-md border border-white"
+                    onClick={onDelete}
+                >
+                    Delete
+                </button>
             </div>
-            <LabelledInput
-                label="Question"
-                name="Question"
-                placeholder="Place Question here"
-            />
-            <LabelledInput
-                label="Answer"
-                name="Answer"
-                placeholder="Place the Correct Answer Here..."
-            />
+            {children}
         </div>
     );
 };
