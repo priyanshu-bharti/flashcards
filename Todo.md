@@ -2,11 +2,11 @@
 
 - Flashcards are arranged in the correct order.
 - Buttons for I know this and don't know works.
-- Cards are getting removed and pushed properly
+- Cards are getting removed and pushed properly.
+- Change the deck property of the flashcard before removing and pushing.
 
 # What's Left to do?
 
-- Change the deck property of the flashcard before removing and pushing.
 - Display a chip stating which deck does the current question belong to.
 - Create a page with form for creating multiple flashcards at once.
 - Push the created cards from form to the unseen array.

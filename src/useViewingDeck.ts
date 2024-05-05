@@ -76,13 +76,14 @@ export function useViewingDeck(): [
     }, []);
 
     function handlePositive() {
-        console.log("I know this");
+        console.log("I know this",currentCard);
 
         if (currentCard.deck === "unseen") {
             const idx = usnDeck.indexOf(currentCard);
             if (idx !== -1) {
                 // Remove from the unseen deck
                 const temp = usnDeck.splice(idx, 1)[0];
+                temp.deck = 'mastered'
                 // Push to the mastered deck
                 setMstDeck([...mstDeck, temp]);
                 // Update the unseen deck
@@ -94,6 +95,7 @@ export function useViewingDeck(): [
             if (idx !== -1) {
                 // Remove from the learning deck
                 const temp = lrnDeck.splice(idx, 1)[0];
+                temp.deck = 'reviewing'
                 // Push to the reviewing deck
                 setRevDeck([...revDeck, temp]);
                 // Update the learning deck
@@ -105,6 +107,7 @@ export function useViewingDeck(): [
             if (idx !== -1) {
                 // Remove from the reviewing deck
                 const temp = revDeck.splice(idx, 1)[0];
+                temp.deck = 'mastered'
                 // Push to the mastered deck
                 setMstDeck([...mstDeck, temp]);
                 // Update the reviewing deck
@@ -122,7 +125,8 @@ export function useViewingDeck(): [
             if (idx !== -1) {
                 // Remove from the reviewing deck
                 const temp = usnDeck.splice(idx, 1)[0];
-                // Push to the mastered deck
+                temp.deck = 'learning'
+                // Push to the lrn deck
                 setLrnDeck([...lrnDeck, temp]);
                 // Update the reviewing deck
                 setUsnDeck([...usnDeck]);
@@ -134,7 +138,8 @@ export function useViewingDeck(): [
             if (idx !== -1) {
                 // Remove from the reviewing deck
                 const temp = revDeck.splice(idx, 1)[0];
-                // Push to the mastered deck
+                // Push to the learning deck
+                temp.deck = 'learning'
                 setLrnDeck([...lrnDeck, temp]);
                 // Update the reviewing deck
                 setRevDeck([...revDeck]);
@@ -147,6 +152,7 @@ export function useViewingDeck(): [
                 // Remove from the reviewing deck
                 const temp = mstDeck.splice(idx, 1)[0];
                 // Push to the mastered deck
+                temp.deck = 'learning'
                 setLrnDeck([...lrnDeck, temp]);
                 // Update the reviewing deck
                 setMstDeck([...mstDeck]);
