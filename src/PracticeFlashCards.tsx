@@ -1,6 +1,5 @@
-
-import { CardList, CurrentCard } from './components';
-import { useViewingCards } from './useViewingCards';
+import { CardList, CurrentCard } from "./components";
+import { useViewingCards } from "./useViewingCards";
 
 const PracticeFlashCards = () => {
     const [
@@ -14,14 +13,13 @@ const PracticeFlashCards = () => {
         handleNegative,
     ] = useViewingCards();
 
-
     return (
         <div className="space-y-8 px-6 mx-auto">
             <h1 className="text-5xl font-bold py-4 text-blue-300">
                 Flashcards app
             </h1>
 
-            <CurrentCard viewingDeck={viewingCards} currentCard={currCardIdx}>
+            <CurrentCard viewingCards={viewingCards} currentCard={currCardIdx}>
                 <button
                     onClick={handlePositive}
                     className="bg-teal-900 px-4 py-2 rounded-md"
@@ -47,6 +45,6 @@ const PracticeFlashCards = () => {
             </div>
         </div>
     );
-}
+};
 
-export default PracticeFlashCards
+export default PracticeFlashCards;

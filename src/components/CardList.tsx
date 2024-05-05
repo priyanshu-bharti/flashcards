@@ -8,7 +8,7 @@ const colors = {
     "Viewing Deck": "",
 };
 
-const deckColor = {
+const queueColor = {
     unseen: "text-gray-300",
     learning: "text-red-300",
     reviewing: "text-amber-300",
@@ -35,7 +35,7 @@ function CardList({
             {cards.map((card) => (
                 <div
                     key={card.question}
-                    className={"text-sm py-2 " + deckColor[card.queue]}
+                    className={"text-sm py-2 " + queueColor[card.queue]}
                 >
                     {card.question}{" "}
                 </div>

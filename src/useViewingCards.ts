@@ -9,43 +9,43 @@ import {
 
 function createViewingQueue(
     V: Flashcard[],
-    unseenDeck: Flashcard[],
-    learningDeck: Flashcard[],
-    reviewingDeck: Flashcard[],
-    masteredDeck: Flashcard[]
+    unseenCards: Flashcard[],
+    learningCards: Flashcard[],
+    reviewingCards: Flashcard[],
+    masteredCards: Flashcard[]
 ) {
     const LEARNING_INTERVAL = 3;
     const REVIEW_INTERVAL = 5;
 
     // Pass 1: Add all the items from the unseen deck
-    V.push(...unseenDeck);
+    V.push(...unseenCards);
 
     // Pass 2: Add items from Learning deck to every LEARNING_INTERVAL consecutive positions
-    for (let i = 0; i < learningDeck.length; i++) {
+    for (let i = 0; i < learningCards.length; i++) {
         const insertionIndex = (i + 1) * LEARNING_INTERVAL - 1;
         if (insertionIndex < V.length) {
-            V.splice(insertionIndex, 0, learningDeck[i]);
+            V.splice(insertionIndex, 0, learningCards[i]);
         } else {
             // If V's length is not enough, add the remaining learning cards to the end
-            V.push(...learningDeck.slice(i));
+            V.push(...learningCards.slice(i));
             break;
         }
     }
 
     // Pass 3: Add items from reviewing deck to every REVIEW_INTERVAL consecutive positions
-    for (let i = 0; i < reviewingDeck.length; i++) {
+    for (let i = 0; i < reviewingCards.length; i++) {
         const insertionIndex = (i + 1) * REVIEW_INTERVAL - 1;
         if (insertionIndex < V.length) {
-            V.splice(insertionIndex, 0, reviewingDeck[i]);
+            V.splice(insertionIndex, 0, reviewingCards[i]);
         } else {
             // If V's length is not enough, add the remaining reviewing cards to the end
-            V.push(...reviewingDeck.slice(i));
+            V.push(...reviewingCards.slice(i));
             break;
         }
     }
 
     // Final Pass: Append Item from mastered deck
-    V.push(...masteredDeck);
+    V.push(...masteredCards);
 }
 
 export function useViewingCards(): [
