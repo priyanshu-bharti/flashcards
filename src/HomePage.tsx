@@ -20,24 +20,27 @@ const HomePage = () => {
             <div className="grid gap-4">
                 <FormHeader onCancel={() => {}} onSave={() => {}}>
                     <LabelledInput
-                        name="Some Name"
+                        id="Some Name"
                         label="Title"
                         placeholder="Enter the Deck title here..."
                         register={register}
+                        registrationParams="title"
                     />
                 </FormHeader>
-                <CardInput onDelete={() => {}} orderNumber={1}>
+                <CardInput onDelete={() => {}} orderNumber={0 + 1}>
                     <LabelledInput
                         label="Question"
-                        name="Question"
+                        id="Question"
                         placeholder="Place Question here"
                         register={register}
+                        registrationParams={`card.${0}.question`}
                     />
                     <LabelledInput
                         label="Answer"
-                        name="Answer"
+                        id="Answer"
                         placeholder="Place the Correct Answer Here..."
                         register={register}
+                        registrationParams={`card.${0}.answer`}
                     />
                 </CardInput>
             </div>
