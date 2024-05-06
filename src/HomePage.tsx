@@ -3,6 +3,8 @@ import { CardInput, FormHeader, SideBar } from "./components";
 import { Flashcard } from "./data";
 import LabelledInput from "./components/LabelledInput";
 import { useState } from "react";
+import { set } from "idb-keyval";
+import { DB_KEYS, saveToDB } from "./DbManager";
 
 export type DeckValuesForm = {
     title: string;
@@ -10,16 +12,14 @@ export type DeckValuesForm = {
 };
 
 const HomePage = () => {
-    const form = useForm<DeckValuesForm>();
+    const {register,control,handleSubmit,formState:{errors}} = useForm<DeckValuesForm>();
     const [decks, setDecks] = useState<DeckValuesForm[]>([]);
 
-    const { register, control, handleSubmit, formState } = form;
-    const { errors } = formState;
-
-    function handleCardSave(data: DeckValuesForm) {
+   async function handleCardSave(data: DeckValuesForm) {
         // TODO: Handle saving to indexedDB
         console.log(data);
         setDecks((prevState) => prevState.concat(data));
+       await saveToDB(DB_KEYS.SAVE_DECK,decks)
     }
 
     const { fields, append, remove } = useFieldArray({

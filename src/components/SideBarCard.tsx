@@ -9,8 +9,8 @@ interface SideBarCardProps {
 
 const SideBarCard = ({ length, title, onEdit, onDelete }: SideBarCardProps) => {
     return (
-        <Link
-            to="/practice"
+        <Link   
+            // to="/practice"
             className="flex flex-col gap-2 p-4 bg-purple-700 rounded-md"
         >
             <div className="flex items-center justify-between">
