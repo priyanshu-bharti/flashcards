@@ -48,7 +48,7 @@ function createViewingQueue(
     V.push(...masteredCards);
 }
 
-export function useViewingCards(): [
+export function useViewingCards(initialDeck:Flashcard[]): [
     number,
     Flashcard[],
     Flashcard[],
@@ -58,13 +58,13 @@ export function useViewingCards(): [
     () => void,
     () => void
 ] {
-    const [unseenCards, setUnseenCards] = useState<Flashcard[]>(unseenCardData);
+    const [unseenCards, setUnseenCards] = useState<Flashcard[]>(initialDeck);
     const [learningCards, setLearningCards] =
-        useState<Flashcard[]>(learningCardData);
+        useState<Flashcard[]>([]);
     const [reviewingCards, setReviewingCards] =
-        useState<Flashcard[]>(reviewingCardData);
+        useState<Flashcard[]>([]);
     const [masteredDeck, setMasteredDeck] =
-        useState<Flashcard[]>(masteredCardData);
+        useState<Flashcard[]>([]);
 
     const [viewingCards, setViewingCards] = useState<Flashcard[]>([]);
     const [currentCardIndex, setCurrentCardIndex] = useState<number>(0);

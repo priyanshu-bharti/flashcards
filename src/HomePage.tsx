@@ -2,24 +2,42 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { CardInput, FormHeader, SideBar } from "./components";
 import { Flashcard } from "./data";
 import LabelledInput from "./components/LabelledInput";
-import { useState } from "react";
-import { set } from "idb-keyval";
-import { DB_KEYS, saveToDB } from "./DbManager";
-
+import { useEffect, useState } from "react";
+import { DB_KEYS, getFromDB, saveToDB } from "./DbManager";
+import { nanoid } from "nanoid";
 export type DeckValuesForm = {
+    id:string;
     title: string;
     cards: Flashcard[];
 };
 
 const HomePage = () => {
-    const {register,control,handleSubmit,formState:{errors}} = useForm<DeckValuesForm>();
+    const {register,reset,control,handleSubmit,formState:{errors},setValue} = useForm<DeckValuesForm>();
     const [decks, setDecks] = useState<DeckValuesForm[]>([]);
-
-   async function handleCardSave(data: DeckValuesForm) {
+    const [isEditing,setIsEditing] = useState<boolean>(false);
+   
+    async function handleCardSave(data: DeckValuesForm) {
         // TODO: Handle saving to indexedDB
-        console.log(data);
-        setDecks((prevState) => prevState.concat(data));
-       await saveToDB(DB_KEYS.SAVE_DECK,decks)
+       
+        if(isEditing){
+          //If the Card is in the edit
+          const newDeck = decks.map((deck:DeckValuesForm)=>{
+            if(deck.id==data.id){
+              return data;
+            }
+            return deck
+          })
+          setDecks(newDeck);
+          await saveToDB(DB_KEYS.SAVE_DECK,newDeck)
+        }else{
+          //new card Edit
+          data = {...data,id:nanoid()}
+          const newDeck = [...decks,data]
+          setDecks(newDeck);
+          await saveToDB(DB_KEYS.SAVE_DECK,newDeck)
+        }
+       setIsEditing(false)
+       reset({id:'',cards:[],title:''})
     }
 
     const { fields, append, remove } = useFieldArray({
@@ -27,13 +45,47 @@ const HomePage = () => {
         control,
     });
 
+useEffect(()=>{
+  async function getDecksFromDB() {
+      const result:DeckValuesForm[] = await getFromDB(DB_KEYS.SAVE_DECK)
+     if(result){
+      setDecks(result)
+     }else{
+      setDecks([])
+     }
+     
+  }
+  getDecksFromDB()
+},[])
+
+const handleEditCardDeck = async(deck:DeckValuesForm)=>{
+  //TODO get from the indexed db
+  setIsEditing(true)
+  console.log("Hello Edit Card",deck);
+  setValue('title',deck.title)
+  setValue('cards',deck.cards)
+  setValue('id',deck.id)
+}
+const handleDeleteCardDeck = async(deleteCardDeck:DeckValuesForm)=>{
+ 
+  const newDeck = decks.filter((deck:DeckValuesForm)=>deck.title!==deleteCardDeck.title)
+  setDecks(newDeck)
+  //Save to Deck
+  await saveToDB(DB_KEYS.SAVE_DECK,newDeck)
+}
+const handleCancelCardDeck = async()=>{
+  setIsEditing(false)
+  reset({id:'',cards:[],title:''})
+}
+
     return (
         <div className="container grid grid-cols-2 gap-12 mx-auto p-4 ">
-            <SideBar decks={decks} />
+            <SideBar decks={decks}onEdit={handleEditCardDeck} onDelete={handleDeleteCardDeck}/>
             <div className="flex flex-col gap-4">
                 <FormHeader
-                    onCancel={() => {}}
+                    onCancel={handleCancelCardDeck }
                     onSave={handleSubmit(handleCardSave)}
+                    isEditing={isEditing}
                 >
                     <LabelledInput
                         id="title"
